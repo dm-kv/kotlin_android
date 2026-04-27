@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
-import ru.netology.nmedia.databinding.CardPostBinding
+import ru.netology.nmedia.databinding.FragmentCardPostBinding
 import ru.netology.nmedia.dto.Post
 import java.math.RoundingMode
 import android.view.View
@@ -18,6 +18,7 @@ interface PostListener {
     fun onLike(post: Post)
     fun onShare(post: Post)
     fun onVideo(post: Post)
+    fun onContent(post: Post)
 }
 
 fun checkTheDigit(digit: Int,) = when(digit) {
@@ -33,7 +34,7 @@ class PostsAdapter(
 {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = FragmentCardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PostViewHolder(binding,listener,)
     }
 
@@ -44,7 +45,7 @@ class PostsAdapter(
 }
 
 class PostViewHolder(
-    private val binding: CardPostBinding,
+    private val binding: FragmentCardPostBinding,
     private val listener: PostListener,
     ): RecyclerView.ViewHolder(binding.root) {
     fun bind(post: Post) {
@@ -93,6 +94,9 @@ class PostViewHolder(
             }
             backgroundVideo.setOnClickListener {
                 listener.onVideo(post)
+            }
+            content.setOnClickListener {
+                listener.onContent(post)
             }
         }
     }
