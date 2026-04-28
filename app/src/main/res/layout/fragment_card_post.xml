@@ -8,7 +8,6 @@
     android:padding="16dp"
     tools:context=".fragment.CardPostFragment">
 
-
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="48dp"
@@ -18,7 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:srcCompat="@sample/posts_avatars"/>
-
 
     <TextView
         android:id="@+id/author"
@@ -35,7 +33,6 @@
         app:layout_constraintTop_toTopOf="@id/avatar"
         tools:text="@sample/posts.json/data/author"/>
 
-
     <TextView
         android:id="@+id/published"
         android:layout_width="wrap_content"
@@ -45,7 +42,6 @@
         app:layout_constraintStart_toEndOf="@id/avatar"
         app:layout_constraintTop_toBottomOf="@id/author"
         tools:text="@sample/posts.json/data/published"/>
-
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/menu"
@@ -61,7 +57,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
         android:layout_width="wrap_content"
@@ -69,10 +64,8 @@
         app:constraint_referenced_ids="avatar, published, menu"
         app:barrierDirection="bottom"/>
 
-
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/content"
-        style="@style/Widget.AppTheme.IconButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="web"
@@ -80,7 +73,6 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintTop_toBottomOf="@id/barrier"
         tools:text="@sample/posts.json/data/content"/>
-
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/play_video_group"
@@ -114,7 +106,6 @@
         app:layout_constraintTop_toTopOf="@id/background_video"
         tools:ignore="SpeakableTextPresentCheck" />
 
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/like"
         style="@style/Widget.AppTheme.LikeButton"
@@ -131,7 +122,6 @@
         app:layout_constraintTop_toBottomOf="@id/background_video"
         tools:text="10"/>
 
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/share"
         style="@style/Widget.AppTheme.IconButton"
@@ -146,7 +136,6 @@
         app:layout_constraintStart_toEndOf="@+id/like"
         app:layout_constraintTop_toBottomOf="@id/background_video"
         tools:text="20" />
-
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/view"
