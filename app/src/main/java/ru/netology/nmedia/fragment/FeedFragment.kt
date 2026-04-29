@@ -16,6 +16,7 @@ import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.fragment.NewPostFragment.Companion.contentArg
 import ru.netology.nmedia.viewmodel.PostViewModel
+import ru.netology.nmedia.fragment.CardPostFragment.Companion.idArg
 
 
 class FeedFragment : Fragment() {
@@ -51,7 +52,12 @@ class FeedFragment : Fragment() {
                 }
 
                 override fun onContent(post: Post) {
-                    findNavController().navigate(R.id.action_feedFragment_to_cardPostFragment)
+                    findNavController().navigate(
+                        R.id.action_feedFragment_to_cardPostFragment,
+                        Bundle().apply {
+                            idArg = post.id
+                        }
+                    )
                 }
 
                 override fun onShare(post: Post) {
