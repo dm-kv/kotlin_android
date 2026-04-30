@@ -7,10 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
-import ru.netology.nmedia.databinding.FragmentCardPostBinding
 import ru.netology.nmedia.dto.Post
 import java.math.RoundingMode
 import android.view.View
+import ru.netology.nmedia.databinding.CardPostBinding
+
 
 interface PostListener {
     fun onEdit(post: Post)
@@ -34,7 +35,7 @@ class PostsAdapter(
 {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        val binding = FragmentCardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PostViewHolder(binding,listener,)
     }
 
@@ -45,7 +46,7 @@ class PostsAdapter(
 }
 
 class PostViewHolder(
-    private val binding: FragmentCardPostBinding,
+    private val binding: CardPostBinding,
     private val listener: PostListener,
     ): RecyclerView.ViewHolder(binding.root) {
     fun bind(post: Post) {

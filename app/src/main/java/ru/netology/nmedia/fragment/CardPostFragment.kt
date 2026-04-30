@@ -79,7 +79,7 @@ class CardPostFragment : Fragment() {
             }
         }
 
-        val holder = PostViewHolder(binding, listener)
+        val holder = PostViewHolder(binding.cardPost, listener)
         viewModel.data.observe(viewLifecycleOwner) { posts ->
             val post = posts.find { it.id == arguments?.idArg }
             if (post != null) {
