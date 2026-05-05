@@ -12,10 +12,16 @@ import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import ru.netology.nmedia.viewmodel.PostViewModel
 import kotlin.getValue
 import ru.netology.nmedia.utils.StringArg
+import androidx.activity.addCallback
+
+
+
 
 class NewPostFragment : Fragment() {
 
     private val viewModel: PostViewModel by activityViewModels()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,8 +29,30 @@ class NewPostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentNewPostBinding.inflate(layoutInflater)
-
         binding.edit.setText(arguments?.contentArg)
+
+
+
+
+
+        super.onCreateView(inflater, container, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            viewModel.saveDraft(binding.edit.text.toString())
+            handleOnBackPressed()
+        }
+
+        viewModel.draftMessage.observe(viewLifecycleOwner) { draft ->
+            if (!draft.isNullOrEmpty()) {
+                binding.edit.setText(draft)
+                binding.edit.setSelection(draft.length)
+            }
+            viewModel.clearDraft()
+        }
+
+
+
+
+
 
         binding.ok.setOnClickListener {
             viewModel.saveContent(binding.edit.text.toString())

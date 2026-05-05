@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import ru.netology.nmedia.dto.Post
 
+
 class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
     companion object {
         val DDL = """
@@ -14,8 +15,8 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
             ${PostColumns.COLUMN_CONTENT} TEXT NOT NULL,
             ${PostColumns.COLUMN_PUBLISHED} TEXT NOT NULL,
             ${PostColumns.COLUMN_LIKED_BY_ME} BOOLEAN NOT NULL DEFAULT 0,
-            ${PostColumns.COLUMN_LIKES} INTEGER NOT NULL DEFAULT 0
-            ${PostColumns.COLUMN_SHARES} INTEGER NOT NULL DEFAULT 0
+            ${PostColumns.COLUMN_LIKES} INTEGER NOT NULL DEFAULT 0,
+            ${PostColumns.COLUMN_SHARES} INTEGER NOT NULL DEFAULT 0,
             ${PostColumns.COLUMN_VIDEO} INTEGER 
             
         );
@@ -130,10 +131,8 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
                 content = getString(getColumnIndexOrThrow(PostColumns.COLUMN_CONTENT)),
                 published = getString(getColumnIndexOrThrow(PostColumns.COLUMN_PUBLISHED)),
                 likes = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_LIKES)),
-
                 shares = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_SHARES)),
                 video = getString(getColumnIndexOrThrow(PostColumns.COLUMN_VIDEO)),
-
                 likedByMe = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_LIKED_BY_ME)) != 0
             )
         }

@@ -2,14 +2,32 @@ package ru.netology.nmedia.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepositorySQLiteImpl
 
+
 private val empty = Post()
 class PostViewModel(application: Application): AndroidViewModel(application) {
+
+
+
+    private val draft_message = MutableLiveData<String?>()
+    val draftMessage: LiveData<String?> = draft_message
+
+    fun saveDraft(message: String) {
+        draft_message.value = message
+    }
+
+    fun clearDraft() {
+        draft_message.value = null
+    }
+
+
+
 
     private val repository: PostRepository = PostRepositorySQLiteImpl(
         AppDb.getInstance(application).postDao)
@@ -36,5 +54,5 @@ class PostViewModel(application: Application): AndroidViewModel(application) {
     fun edit(post: Post) {
         edited.value = post
     }
-
 }
+
