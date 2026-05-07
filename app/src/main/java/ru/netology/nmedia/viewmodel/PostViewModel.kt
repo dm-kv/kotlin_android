@@ -26,9 +26,6 @@ class PostViewModel(application: Application): AndroidViewModel(application) {
         draft_message.value = null
     }
 
-
-
-
     private val repository: PostRepository = PostRepositorySQLiteImpl(
         AppDb.getInstance(application).postDao)
     val data = repository.get()

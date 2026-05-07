@@ -22,6 +22,7 @@ class PostRepositorySQLiteImpl(
     override fun get(): LiveData<List<Post>> = data
 
     override fun save(post: Post) {
+        dao.save(post)
         posts = if (post.id == 0L) {
             listOf(post.copy(id = ++nextId, author = "DK", published = "29.03.26")) + posts
         } else {
@@ -48,6 +49,7 @@ class PostRepositorySQLiteImpl(
     }
 
     override fun shareById(id: Long) {
+        dao.shareById(id)
         posts = posts.map {
             if (it.id != id) it else it.copy(shares = it.shares + 1)
         }

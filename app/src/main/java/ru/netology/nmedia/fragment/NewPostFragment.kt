@@ -15,13 +15,9 @@ import ru.netology.nmedia.utils.StringArg
 import androidx.activity.addCallback
 
 
-
-
 class NewPostFragment : Fragment() {
 
     private val viewModel: PostViewModel by activityViewModels()
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,33 +27,25 @@ class NewPostFragment : Fragment() {
         val binding = FragmentNewPostBinding.inflate(layoutInflater)
         binding.edit.setText(arguments?.contentArg)
 
-
-
-
-
         super.onCreateView(inflater, container, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.saveDraft(binding.edit.text.toString())
-            handleOnBackPressed()
+            findNavController().navigateUp()
         }
 
+        super.onCreateView(inflater, container, savedInstanceState)
         viewModel.draftMessage.observe(viewLifecycleOwner) { draft ->
             if (!draft.isNullOrEmpty()) {
                 binding.edit.setText(draft)
                 binding.edit.setSelection(draft.length)
             }
-            viewModel.clearDraft()
         }
-
-
-
-
-
 
         binding.ok.setOnClickListener {
             viewModel.saveContent(binding.edit.text.toString())
             AndroidUtils.hideKeyboard(requireView())
             findNavController().navigateUp()
+            viewModel.clearDraft()
         }
         return binding.root
     }
