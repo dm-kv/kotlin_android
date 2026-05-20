@@ -10,8 +10,11 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityAppBinding
-import ru.netology.nmedia.fragment.NewPostFragment
 import ru.netology.nmedia.fragment.NewPostFragment.Companion.contentArg
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import com.google.firebase.messaging.FirebaseMessaging
 
 class AppActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,8 +28,20 @@ class AppActivity : AppCompatActivity() {
             insets
         }
 
+        requestNotificationsPermission()
+
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
         val navController = navHostFragment.navController
+
+        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+            println(it)
+        }
+            .addOnFailureListener {
+                it.printStackTrace()
+            }
+
+
+
 
         intent?.let {
             if (it.action != Intent.ACTION_SEND) {
@@ -51,4 +66,19 @@ class AppActivity : AppCompatActivity() {
             )
         }
     }
+
+    private fun requestNotificationsPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return
+        }
+
+        val permission = Manifest.permission.POST_NOTIFICATIONS
+        if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+
+        requestPermissions(arrayOf(permission), 1)
+    }
+
+
 }
