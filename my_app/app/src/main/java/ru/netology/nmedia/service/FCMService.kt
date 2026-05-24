@@ -50,6 +50,7 @@ class FCMService: FirebaseMessagingService() {
         when (action) {
             Action.LIKE -> handleLike(
                 gson.fromJson(message.data[content], Like::class.java)
+
             )
             Action.UNKNOWN -> {
                 Log.w(TAG, "Unknown action received: ${message.data[content]}")
