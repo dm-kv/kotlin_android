@@ -12,19 +12,26 @@ fun main() {
     val options = FirebaseOptions.builder()
         .setCredentials(GoogleCredentials.fromStream(FileInputStream("fcm.json")))
         .build()
-
     FirebaseApp.initializeApp(options)
 
     val message = Message.builder()
-        .putData("action", "LIKE")
+        .putData("action", "NEW_POST")
         .putData("content", """{
           "userId": 1,
           "userName": "Vasiliy",
           "postId": 2,
-          "postAuthor": "Netology"
+          "postAuthor": "Netology",
+          "postText": "Привет, это мой новый пост о разработке мобильных приложений! Сегодня поговорим о Kotlin и Android Studio.",
+          "notificationTitle": "Vasiliy опубликовал новый пост",
+          "notificationBody": "Привет, это мой новый пост о разработке мобильных приложений! Сегодня поговорим о Kotlin и Android Studio."
         }""".trimIndent())
         .setToken(token)
         .build()
 
-    FirebaseMessaging.getInstance().send(message)
+    try {
+        FirebaseMessaging.getInstance().send(message)
+        println("successful send message")
+    } catch (e: Exception) {
+        println("error send message: ${e.message}")
+    }
 }

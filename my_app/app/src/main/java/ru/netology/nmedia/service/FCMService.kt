@@ -15,6 +15,10 @@ import android.content.pm.PackageManager
 import kotlin.random.Random
 import android.util.Log
 import android.content.ContentValues.TAG
+import android.app.PendingIntent
+import android.content.Intent
+import kotlin.jvm.java
+import ru.netology.nmedia.activity.AppActivity
 
 class FCMService: FirebaseMessagingService() {
 
@@ -46,14 +50,22 @@ class FCMService: FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        val action = parseAction(message.data[content])
-        when (action) {
-            Action.LIKE -> handleLike(
-                gson.fromJson(message.data[content], Like::class.java)
+        val actionStr = message.data[action]
+        val contentStr = message.data[content]
 
-            )
+        val action = parseAction(actionStr)
+
+        when (action) {
+            Action.LIKE -> {
+                val likeContent = gson.fromJson(contentStr, Like::class.java)
+                handleLike(likeContent)
+            }
+            Action.NEW_POST -> {
+                val newPostContent = gson.fromJson(contentStr, NewPost::class.java)
+                handleNewPost(newPostContent)
+            }
             Action.UNKNOWN -> {
-                Log.w(TAG, "Unknown action received: ${message.data[content]}")
+                Log.w(TAG, "Unknown action received: $contentStr")
             }
         }
     }
@@ -75,6 +87,43 @@ class FCMService: FirebaseMessagingService() {
 
     }
 
+    private fun handleNewPost(content: NewPost) {
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle("${content.userName} опубликовал новый пост")
+            .setContentText(content.postText)
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(content.postText)
+                    .setSummaryText(content.userName)
+            )
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+            .addAction(
+                R.drawable.ic_notification,
+                "Открыть пост",
+                createOpenPostIntent(content.postId)
+            )
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build()
+
+        notify(notification)
+    }
+
+    private fun createOpenPostIntent(postId: Long): PendingIntent {
+        val intent = Intent(this, AppActivity::class.java).apply {
+            putExtra("POST_ID", postId)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        return PendingIntent.getActivity(
+            this,
+            postId.toInt(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
     private fun notify(notification: Notification) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
             checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
@@ -89,8 +138,8 @@ class FCMService: FirebaseMessagingService() {
 
     enum class Action {
         LIKE,
-        UNKNOWN
-
+        UNKNOWN,
+        NEW_POST
     }
 
     data class Like(
@@ -98,5 +147,12 @@ class FCMService: FirebaseMessagingService() {
         val userName: String,
         val postId: Long,
         val postAuthor: String,
+    )
+
+    data class NewPost(
+        val userId: Long,
+        val userName: String,
+        val postId: Long,
+        val postText: String
     )
 }
