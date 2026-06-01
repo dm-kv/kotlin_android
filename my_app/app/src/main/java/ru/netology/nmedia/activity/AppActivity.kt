@@ -40,9 +40,6 @@ class AppActivity : AppCompatActivity() {
                 it.printStackTrace()
             }
 
-
-
-
         intent?.let {
             if (it.action != Intent.ACTION_SEND) {
                 return@let
