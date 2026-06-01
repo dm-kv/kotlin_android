@@ -30,7 +30,7 @@ fun main() {
 
     try {
         FirebaseMessaging.getInstance().send(message)
-        println("successful send message")
+        println("successful send message  ")
     } catch (e: Exception) {
         println("error send message: ${e.message}")
     }
