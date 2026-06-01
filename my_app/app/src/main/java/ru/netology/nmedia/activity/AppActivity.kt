@@ -79,6 +79,4 @@ class AppActivity : AppCompatActivity() {
 
         requestPermissions(arrayOf(permission), 1)
     }
-
-
 }

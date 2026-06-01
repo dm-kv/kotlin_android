@@ -50,9 +50,9 @@ class FCMService: FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
+
         val actionStr = message.data[action]
         val contentStr = message.data[content]
-
         val action = parseAction(actionStr)
 
         when (action) {
